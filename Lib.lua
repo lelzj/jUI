@@ -64,3 +64,40 @@ end
 Addon.IsClassic = function( self )
   return ( WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE );
 end
+
+Addon.Hex2RGB = function( self,Hex )
+  Hex = Hex:gsub( '#','' );
+  return tonumber( '0x' .. Hex:sub( 1,2 ) ) / 255, 
+    tonumber( '0x' .. Hex:sub( 3,4 ) ) / 255, 
+    tonumber( '0x' .. Hex:sub( 5,6 ) ) / 255
+end
+
+Addon.Notify = function( self,... )
+    local Prefix = CreateColor(
+        self.Theme.Notify.r,
+        self.Theme.Notify.g,
+        self.Theme.Notify.b
+    ):WrapTextInColorCode( AddonName );
+
+    _G[ 'DEFAULT_CHAT_FRAME' ]:AddMessage( string.join( ' ', Prefix, ... ) );
+end
+
+Addon.Warn = function( self,... )
+    local Prefix = CreateColor(
+        self.Theme.Warn.r,
+        self.Theme.Warn.g,
+        self.Theme.Warn.b
+    ):WrapTextInColorCode( AddonName );
+
+    _G[ 'DEFAULT_CHAT_FRAME' ]:AddMessage( string.join( ' ', Prefix, ... ) );
+end
+
+Addon.Error = function( self,... )
+    local Prefix = CreateColor(
+        self.Theme.Error.r,
+        self.Theme.Error.g,
+        self.Theme.Error.b
+    ):WrapTextInColorCode( AddonName );
+
+    _G[ 'DEFAULT_CHAT_FRAME' ]:AddMessage( string.join( ' ', Prefix, ... ) );
+end
