@@ -1,15 +1,45 @@
-local _,Addon = ...;
+local AddonName,Addon = ...;
 
 Addon.FRAMES = CreateFrame( 'Frame' );
 
+Addon.FRAMES.Notify = function( self,... )
+    local Prefix = CreateColor(
+        Addon.Theme.Notify.r,
+        Addon.Theme.Notify.g,
+        Addon.Theme.Notify.b
+    ):WrapTextInColorCode( AddonName );
+
+    _G[ 'DEFAULT_CHAT_FRAME' ]:AddMessage( string.join( ' ', Prefix, ... ) );
+end
+
+Addon.FRAMES.Warn = function( self,... )
+    local Prefix = CreateColor(
+        Addon.Theme.Warn.r,
+        Addon.Theme.Warn.g,
+        Addon.Theme.Warn.b
+    ):WrapTextInColorCode( AddonName );
+
+    _G[ 'DEFAULT_CHAT_FRAME' ]:AddMessage( string.join( ' ', Prefix, ... ) );
+end
+
+Addon.FRAMES.Error = function( self,... )
+    local Prefix = CreateColor(
+        Addon.Theme.Error.r,
+        Addon.Theme.Error.g,
+        Addon.Theme.Error.b
+    ):WrapTextInColorCode( AddonName );
+
+    _G[ 'DEFAULT_CHAT_FRAME' ]:AddMessage( string.join( ' ', Prefix, ... ) );
+end
+
 Addon.FRAMES.AddLocked = function( self,VarData,Parent )
     local FontString = Parent:CreateFontString( nil,'ARTWORK','GameFontHighlightSmall' );
-    FontString:SetFont( self.Theme.Font.Family, self.Theme.Font.Normal, self.Theme.Font.Flags );
+    FontString:SetFont( Addon.Theme.Font.Family, Addon.Theme.Font.Normal, Addon.Theme.Font.Flags );
     FontString:SetText( VarData.DisplayText );
     FontString:SetTextColor( 
-        self.Theme.Error.r,
-        self.Theme.Error.g,
-        self.Theme.Error.b
+        Addon.Theme.Error.r,
+        Addon.Theme.Error.g,
+        Addon.Theme.Error.b
     );
     FontString:SetJustifyH( 'left' );
     FontString:SetJustifyV( 'top' );
@@ -18,12 +48,12 @@ end
 
 Addon.FRAMES.AddModified = function( self,VarData,Parent )
     local FontString = Parent:CreateFontString( nil,'ARTWORK','GameFontHighlightSmall' );
-    FontString:SetFont( self.Theme.Font.Family, self.Theme.Font.Normal, self.Theme.Font.Flags );
+    FontString:SetFont( Addon.Theme.Font.Family, Addon.Theme.Font.Normal, Addon.Theme.Font.Flags );
     FontString:SetText( VarData.DisplayText );
     FontString:SetTextColor( 
-        self.Theme.Notify.r,
-        self.Theme.Notify.g,
-        self.Theme.Notify.b
+        Addon.Theme.Notify.r,
+        Addon.Theme.Notify.g,
+        Addon.Theme.Notify.b
     );
     FontString:SetJustifyH( 'left' );
     FontString:SetJustifyV( 'top' );
@@ -32,19 +62,19 @@ end
 
 Addon.FRAMES.AddLabel = function( self,VarData,Parent )
     local FontString = Parent:CreateFontString( nil,'ARTWORK','GameFontHighlightSmall' );
-    FontString:SetFont( self.Theme.Font.Family, self.Theme.Font.Normal, self.Theme.Font.Flags );
+    FontString:SetFont( Addon.Theme.Font.Family, Addon.Theme.Font.Normal, Addon.Theme.Font.Flags );
     FontString:SetText( VarData.DisplayText );
     if( VarData.Flagged ) then
         FontString:SetTextColor( 
-            self.Theme.Disabled.r,
-            self.Theme.Disabled.g,
-            self.Theme.Disabled.b
+            Addon.Theme.Disabled.r,
+            Addon.Theme.Disabled.g,
+            Addon.Theme.Disabled.b
         );
     else
         FontString:SetTextColor( 
-            self.Theme.Text.r,
-            self.Theme.Text.g,
-            self.Theme.Text.b
+            Addon.Theme.Text.r,
+            Addon.Theme.Text.g,
+            Addon.Theme.Text.b
         );
     end
     FontString:SetJustifyH( 'left' );
@@ -54,19 +84,19 @@ end
 
 Addon.FRAMES.AddModifiedTip = function( self,VarData,Parent )
     local FontString = Parent:CreateFontString( nil,'ARTWORK','GameFontHighlightSmall' );
-    FontString:SetFont( self.Theme.Font.Family, self.Theme.Font.Normal, self.Theme.Font.Flags );
+    FontString:SetFont( Addon.Theme.Font.Family, Addon.Theme.Font.Normal, Addon.Theme.Font.Flags );
     FontString:SetText( VarData.DisplayText );
     if( VarData.Flagged ) then
         FontString:SetTextColor( 
-            self.Theme.Disabled.r,
-            self.Theme.Disabled.g,
-            self.Theme.Disabled.b
+            Addon.Theme.Disabled.r,
+            Addon.Theme.Disabled.g,
+            Addon.Theme.Disabled.b
         );
     else
         FontString:SetTextColor( 
-            self.Theme.Notify.r,
-            self.Theme.Notify.g,
-            self.Theme.Notify.b
+            Addon.Theme.Notify.r,
+            Addon.Theme.Notify.g,
+            Addon.Theme.Notify.b
         );
     end
     FontString:SetJustifyH( 'left' );
@@ -81,7 +111,7 @@ Addon.FRAMES.AddModifiedTip = function( self,VarData,Parent )
         self.Label.Tip = CreateFrame( 'GameTooltip',self.DataKeys.Name..'ToolTip',UIParent,'GameTooltipTemplate' );
         GameTooltip:SetOwner( self.DataKeys.Parent,'ANCHOR_NONE',0,0 );
         GameTooltip:AddLine( self.DataKeys.DisplayText,nil,nil,nil,false );
-        GameTooltip:AddLine( self.DataKeys.Description,1,1,1,false );
+        GameTooltip:AddLine( self.DataKeys.Description,1,1,1,true );
         GameTooltip:SetPoint( 'topright',self.DataKeys.Parent,'bottomright',0,0 );
         GameTooltip:Show();
     end );
@@ -93,19 +123,19 @@ end
 
 Addon.FRAMES.AddTip = function( self,VarData,Parent )
     local FontString = Parent:CreateFontString( nil,'ARTWORK','GameFontHighlightSmall' );
-    FontString:SetFont( self.Theme.Font.Family, self.Theme.Font.Normal, self.Theme.Font.Flags );
+    FontString:SetFont( Addon.Theme.Font.Family, Addon.Theme.Font.Normal, Addon.Theme.Font.Flags );
     FontString:SetText( VarData.DisplayText );
     if( VarData.Flagged ) then
         FontString:SetTextColor( 
-            self.Theme.Disabled.r,
-            self.Theme.Disabled.g,
-            self.Theme.Disabled.b
+            Addon.Theme.Disabled.r,
+            Addon.Theme.Disabled.g,
+            Addon.Theme.Disabled.b
         );
     else
         FontString:SetTextColor( 
-            self.Theme.Text.r,
-            self.Theme.Text.g,
-            self.Theme.Text.b
+            Addon.Theme.Text.r,
+            Addon.Theme.Text.g,
+            Addon.Theme.Text.b
         );
     end
     FontString:SetJustifyH( 'left' );
@@ -119,7 +149,7 @@ Addon.FRAMES.AddTip = function( self,VarData,Parent )
     Parent:SetScript( 'OnEnter',function( self )
         GameTooltip:SetOwner( self.DataKeys.Parent,'ANCHOR_NONE',0,0 );
         GameTooltip:AddLine( self.DataKeys.DisplayText,nil,nil,nil,false );
-        GameTooltip:AddLine( self.DataKeys.Description,1,1,1,false );
+        GameTooltip:AddLine( self.DataKeys.Description,1,1,1,true );
         GameTooltip:SetPoint( 'topright',self.DataKeys.Parent,'bottomright',0,0 );
         GameTooltip:Show();
     end );
@@ -130,10 +160,9 @@ Addon.FRAMES.AddTip = function( self,VarData,Parent )
 end
 
 Addon.FRAMES.AddSeperator = function( self,Parent )
-  local Texture = Parent:CreateTexture( nil, 'ARTWORK', nil, 2 );
-  Texture:SetTexture( 'Interface\\Addons\\'..Addon.AddonName..'\\Textures\\seperator' );
-  Texture:SetSize( Parent:GetWidth( ), 2 );
-  Texture:SetAlpha( 0.1 );
+  local Texture = Parent:CreateTexture( nil, 'BACKGROUND', nil, 2 );
+  Texture:SetColorTexture( 39,39,39,.1 );
+  Texture:SetSize( Parent:GetWidth(),1 );
   return Texture;
 end
 
@@ -226,6 +255,27 @@ Addon.FRAMES.AddVarToggle = function( self,VarData,Parent,Handler )
     return Frame;
 end
 
+Addon.FRAMES.AddCheckBox = function( self,VarData,Parent,Handler )
+    local Key = string.lower( VarData.Name );
+    local Frame = CreateFrame( 'CheckButton',Key..'Toggle',Parent,'ChatConfigCheckButtonTemplate' );
+    Frame:SetChecked( Addon:Int2Bool( Handler:GetVarValue( Key ) ) );
+    Frame.keyValue = Key;
+    if( VarData.DisplayText ) then
+        Frame.Text:SetText( VarData.DisplayText );
+    end
+    if( VarData.Description ) then
+        Frame.tooltip = VarData.Description;
+    end
+    Frame:HookScript( 'OnClick',function( self )
+         Handler:SetVarValue( self.keyValue,Addon:BoolToInt( self:GetChecked() ) );
+    end );
+    if( VarData.Flagged ) then
+        Frame:Disable();
+    end
+    Frame:SetSize( 25,25 );
+    return Frame;
+end
+
 Addon.FRAMES.AddButton = function( self,VarData,Parent )
     local Key = string.lower( VarData.Name );
     local Frame = CreateFrame( 'Button',Key..'Toggle',Parent,'UIPanelButtonNoTooltipTemplate' );
@@ -242,7 +292,11 @@ Addon.FRAMES.AddEdit = function( self,VarData,Parent,Handler )
     local Frame = CreateFrame( 'EditBox',Key..'Edit',Parent,'InputBoxTemplate' );
     Frame:SetAutoFocus( false );
     Frame:ClearFocus();
-    Frame:SetFont( self.Theme.Font.Family, self.Theme.Font.Normal, self.Theme.Font.Flags );
+    Frame:SetTextInsets( 0,0,3,3 );
+    if( VarData.Flagged ) then
+        Frame:Disable();
+    end
+    Frame:SetFont( Addon.Theme.Font.Family, Addon.Theme.Font.Normal, Addon.Theme.Font.Flags );
     Frame:SetText( VarData.Value );
     Frame.keyValue = Key;
     Frame:HookScript( 'OnEnterPressed',function( self )
@@ -270,7 +324,7 @@ Addon.FRAMES.AddMultiEdit = function( self,VarData,Parent,Handler )
     end
     Frame.Input:SetSize( 20,20 );
     Frame.Input:ClearFocus();
-    Frame.Input:SetFont( self.Theme.Font.Family, self.Theme.Font.Normal, self.Theme.Font.Flags );
+    Frame.Input:SetFont( Addon.Theme.Font.Family, Addon.Theme.Font.Normal, Addon.Theme.Font.Flags );
     Frame.Input:SetText( VarData.Value );
     Frame.Input.keyValue = Key;
     Frame.Input:HookScript( 'OnTextChanged',function( self )
@@ -399,7 +453,11 @@ end
 -- Two named frames. todo: make support only one/make sizing fully dynamic
 Addon.FRAMES.DrawFromSettings = function( self,Settings,ObjHandler )
 
-    local X,Y = 20,40; 
+    
+    local X,Y = 10,0; 
+    local AbsX = X;
+    local AbsY = Y;
+    local RowHeight = 20;
     -- Increment Y to control vertical spacing
     -- this will afect both columns, all rows
 
@@ -407,7 +465,7 @@ Addon.FRAMES.DrawFromSettings = function( self,Settings,ObjHandler )
     ObjHandler.ScrollFrame = CreateFrame( 'ScrollFrame',nil,ObjHandler.Panel,'UIPanelScrollFrameTemplate' );
 
     -- Options scrolling content frame
-    ObjHandler.ScrollChild = CreateFrame( 'Frame' );
+    ObjHandler.ScrollChild = CreateFrame( 'Frame',ObjHandler.Panel:GetName()..'ScrollChild' );
 
     -- Options scroll frame
     ObjHandler.ScrollFrame:SetPoint( 'TOPLEFT',3,-4 );
@@ -422,37 +480,26 @@ Addon.FRAMES.DrawFromSettings = function( self,Settings,ObjHandler )
     end
     ObjHandler.ScrollChild:SetHeight( 20 );
 
-    -- Config screen left side
-    ObjHandler.ScrollChild.Left = CreateFrame( 'Frame',ObjHandler.Panel:GetName()..'Left',ObjHandler.ScrollChild );
-    ObjHandler.ScrollChild.Left:SetSize( ObjHandler.ScrollChild:GetWidth() / 3,ObjHandler.ScrollChild:GetHeight() - 10 );
-    ObjHandler.ScrollChild.Left:SetPoint( 'topleft',ObjHandler.ScrollChild,'topleft' );
+    local AbsParent = ObjHandler.ScrollChild;
+    AbsParent.KeyValue = AbsParent:GetName();
 
-    -- Config screen right side
-    ObjHandler.ScrollChild.Right = CreateFrame( 'Frame',ObjHandler.Panel:GetName()..'Right',ObjHandler.ScrollChild );
-    ObjHandler.ScrollChild.Right:SetSize( ObjHandler.ScrollChild:GetWidth() / 3,ObjHandler.ScrollChild:GetHeight() - 10 );
-    ObjHandler.ScrollChild.Right:SetPoint( 'topleft',ObjHandler.ScrollChild.Left,'topright' );
-
-    local Children = {};
     local Iterator = 0;
+    local NumPerLine = 3;
+    local MyPosition = 'topleft';
+    local YourPosition = 'topleft';
+    local Children = {};
+    local Parent;
+
+    table.insert( Children,AbsParent );
+
     for Var,VarData in Addon:Sort( Settings ) do
         if( VarData.Type == 'Toggle' ) then
 
-            local Parent;
-            if( Iterator % 2 == 0 ) then
-                Parent = ObjHandler.ScrollChild.Left;
-            else
-                Parent = ObjHandler.ScrollChild.Right;
-            end
-            if( not Children[ Parent:GetName() ] ) then
-                Children[ Parent:GetName() ] = 1;
-            else
-                Children[ Parent:GetName() ] = Children[ Parent:GetName() ]+1;
-            end
-
-            --print( Parent:GetName(),'Toggle',X,-( Y*NumChildren ) )
-            ObjHandler[ Var ] = LibStub( 'Sushi-3.1' ).Check( Parent );
+            Parent = Children[ Iterator+1 ];
+            
+            ObjHandler[ Var ] = LibStub( 'Sushi-3.2' ).Check( Parent );
             ObjHandler[ Var ]:SetChecked( Addon:Int2Bool( ObjHandler:GetValue( VarData.KeyValue ) ) );
-            ObjHandler[ Var ]:SetPoint( 'topleft',Parent,'bottomleft',X,-( Y*Children[ Parent:GetName() ] ) );
+            ObjHandler[ Var ]:SetPoint( MyPosition,Children[ Iterator ],YourPosition,X,Y );
             ObjHandler[ Var ]:SetTip( Var,VarData.Description );
             ObjHandler[ Var ]:SetLabel( Var );
             ObjHandler[ Var ].KeyValue = Var;
@@ -460,24 +507,21 @@ Addon.FRAMES.DrawFromSettings = function( self,Settings,ObjHandler )
             ObjHandler[ Var ]:SetCall('OnClick',function( self )
                 ObjHandler:SetValue( self.KeyValue,Addon:BoolToInt( self:GetValue() ) );
             end );
+
+            print( Var,MyPosition,Parent.KeyValue,YourPosition,X,Y );
+
+            table.insert( Children,ObjHandler[ Var ] );
             Iterator = Iterator+1;
+
+            if( Iterator > 1 ) then
+                YourPosition = 'topright';
+            end
         elseif( VarData.Type == 'Range' ) then
 
-            local Parent;
-            if( Iterator % 2 == 0 ) then
-                Parent = ObjHandler.ScrollChild.Left;
-            else
-                Parent = ObjHandler.ScrollChild.Right;
-            end
-            if( not Children[ Parent:GetName() ] ) then
-                Children[ Parent:GetName() ] = 1;
-            else
-                Children[ Parent:GetName() ] = Children[ Parent:GetName() ]+1;
-            end
+            Parent = Children[ Iterator+1 ];
 
-            --print( Parent:GetName(),'Range',X,-( Y*NumChildren ) )
-            ObjHandler[ Var ] = LibStub( 'Sushi-3.1' ).Slider( Parent );
-            ObjHandler[ Var ]:SetPoint( 'topleft',Parent,'bottomleft',X,-( Y*Children[ Parent:GetName() ] ) );
+            ObjHandler[ Var ] = LibStub( 'Sushi-3.2' ).Slider( Parent );
+            ObjHandler[ Var ]:SetPoint( MyPosition,Children[ Iterator ],YourPosition,X,Y );
             ObjHandler[ Var ]:SetTip( Var,VarData.Description );
             ObjHandler[ Var ]:SetValue( ObjHandler:GetValue( VarData.KeyValue ) );
             ObjHandler[ Var ].Edit:SetValue( Addon:SliderRound( ObjHandler:GetValue( VarData.KeyValue ),VarData.Step ) );
@@ -494,24 +538,19 @@ Addon.FRAMES.DrawFromSettings = function( self,Settings,ObjHandler )
             ObjHandler[ Var ]:SetCall('OnValue',function( self )
                 ObjHandler:SetValue( self.KeyValue,self:GetValue() );
             end );
+
+            table.insert( Children,ObjHandler[ Var ] );
             Iterator = Iterator+1;
+
+            if( Iterator > 1 ) then
+                YourPosition = 'topright';
+            end
         elseif( VarData.Type == 'Text' ) then
 
-            local Parent;
-            if( Iterator % 2 == 0 ) then
-                Parent = ObjHandler.ScrollChild.Left;
-            else
-                Parent = ObjHandler.ScrollChild.Right;
-            end
-            if( not Children[ Parent:GetName() ] ) then
-                Children[ Parent:GetName() ] = 1;
-            else
-                Children[ Parent:GetName() ] = Children[ Parent:GetName() ]+1;
-            end
+            Parent = Children[ Iterator+1 ];
 
-            --print( Parent:GetName(),'Range',X,-( Y*NumChildren ) )
-            ObjHandler[ Var ] = LibStub( 'Sushi-3.1' ).BoxEdit( Parent );
-            ObjHandler[ Var ]:SetPoint( 'topleft',Parent,'bottomleft',X+10,-( Y*Children[ Parent:GetName() ] ) );
+            ObjHandler[ Var ] = LibStub( 'Sushi-3.2' ).BoxEdit( Parent );
+            ObjHandler[ Var ]:SetPoint( MyPosition,Children[ Iterator ],YourPosition,X,Y );
             ObjHandler[ Var ]:SetTip( Var,VarData.Description );
             ObjHandler[ Var ]:SetMultiLine( true );
             if( VarData.CSV ) then
@@ -539,23 +578,19 @@ Addon.FRAMES.DrawFromSettings = function( self,Settings,ObjHandler )
                     ObjHandler:SetValue( self.KeyValue,self:GetValue() );
                 end
             end );
+
+            table.insert( Children,ObjHandler[ Var ] );
             Iterator = Iterator+1;
+
+            if( Iterator > 1 ) then
+                YourPosition = 'topright';
+            end
         elseif( VarData.Type == 'Color' ) then
 
-            local Parent;
-            if( Iterator % 2 == 0 ) then
-                Parent = ObjHandler.ScrollChild.Left;
-            else
-                Parent = ObjHandler.ScrollChild.Right;
-            end
-            if( not Children[ Parent:GetName() ] ) then
-                Children[ Parent:GetName() ] = 1;
-            else
-                Children[ Parent:GetName() ] = Children[ Parent:GetName() ]+1;
-            end
+            Parent = Children[ Iterator+1 ];
 
-            ObjHandler[ Var ] = LibStub( 'Sushi-3.1' ).ColorPicker( Parent );
-            ObjHandler[ Var ]:SetPoint( 'topleft',Parent,'bottomleft',X,-( Y*Children[ Parent:GetName() ] ) );
+            ObjHandler[ Var ] = LibStub( 'Sushi-3.2' ).ColorPicker( Parent );
+            ObjHandler[ Var ]:SetPoint( MyPosition,Children[ Iterator ],YourPosition,X,Y );
             ObjHandler[ Var ]:SetTip( Var,VarData.Description );
             ObjHandler[ Var ]:SetLabel( Var );
             ObjHandler[ Var ].KeyValue = Var;
@@ -565,24 +600,20 @@ Addon.FRAMES.DrawFromSettings = function( self,Settings,ObjHandler )
                 ObjHandler.persistence[ self.KeyValue ] = { self.color.r,self.color.g,self.color.b,self.color.a };
             end )
             --ObjHandler[ Var ].hasOpacity = true;
+
+            table.insert( Children,ObjHandler[ Var ] );
             Iterator = Iterator+1;
+
+            if( Iterator > 1 ) then
+                YourPosition = 'topright';
+            end
         elseif( VarData.Type == 'List' ) then
 
-            local Parent;
-            if( Iterator % 2 == 0 ) then
-                Parent = ObjHandler.ScrollChild.Left;
-            else
-                Parent = ObjHandler.ScrollChild.Right;
-            end
-            if( not Children[ Parent:GetName() ] ) then
-                Children[ Parent:GetName() ] = 1;
-            else
-                Children[ Parent:GetName() ] = Children[ Parent:GetName() ]+1;
-            end
+            Parent = Children[ Iterator+1 ];
 
-            ObjHandler[ Var ] = LibStub( 'Sushi-3.1' ).DropChoice( Parent );
+            ObjHandler[ Var ] = LibStub( 'Sushi-3.2' ).DropChoice( Parent );
             ObjHandler[ Var ]:SetValue( ObjHandler:GetValue( VarData.KeyValue ) );
-            ObjHandler[ Var ]:SetPoint( 'topleft',Parent,'bottomleft',X,-( Y*Children[ Parent:GetName() ] ) );
+            ObjHandler[ Var ]:SetPoint( MyPosition,Children[ Iterator ],YourPosition,X,Y );
             ObjHandler[ Var ]:SetTip( Var,VarData.Description );
             ObjHandler[ Var ]:SetLabel( Var );
             ObjHandler[ Var ].KeyValue = Var;
@@ -599,7 +630,25 @@ Addon.FRAMES.DrawFromSettings = function( self,Settings,ObjHandler )
                 print( self.KeyValue,self:GetValue() )
                 ObjHandler:SetValue( self.KeyValue,self:GetValue() );
             end );
+
+            table.insert( Children,ObjHandler[ Var ] );
             Iterator = Iterator+1;
+            X = X+ElementWidth;
+
+            if( Iterator > 1 ) then
+                YourPosition = 'topright';
+            end
         end
+        print( Iterator, NumPerLine )
+        if( Iterator % NumPerLine == 0 ) then
+            Parent = AbsParent;
+            YourPosition = 'topleft';
+            X = AbsX;
+            Y = Y-RowHeight;
+            print( 'here yes' )
+        else
+            Y = AbsY;
+        end
+        
     end
 end
