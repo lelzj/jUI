@@ -9,7 +9,7 @@
 ## DefaultState: disabled
 ## SavedVariables: jUI
 
-## Interface: 11500
+## Interface: 40400
 #/run print((select(4, GetBuildInfo())));
 #https://markdownlivepreview.com/
 
