@@ -160,9 +160,15 @@ Addon.FRAMES.AddTip = function( self,VarData,Parent )
 end
 
 Addon.FRAMES.AddSeperator = function( self,Parent )
-  local Texture = Parent:CreateTexture( nil, 'BACKGROUND', nil, 2 );
-  Texture:SetColorTexture( 39,39,39,.1 );
-  Texture:SetSize( Parent:GetWidth(),1 );
+  local Texture = Parent:CreateTexture( nil,'BACKGROUND',nil,2 );
+  Texture:SetColorTexture( 255/255,255/255,255/255,.1 );
+  Texture:SetSize( Parent:GetWidth(),.5 );
+  return Texture;
+end
+
+Addon.FRAMES.AddBackGround = function( self,Parent )
+  local Texture = Parent:CreateTexture( nil,'BACKGROUND',nil,2 );
+  Texture:SetColorTexture( 41/255,33/255,36/255,.3 );
   return Texture;
 end
 
