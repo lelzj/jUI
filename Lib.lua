@@ -1,15 +1,15 @@
 local _,Addon = ...;
 
-Addon.Implode = function( self,Input,Delimiter )
-  return table.concat( Input,Delimiter );
-end
-
 Addon.Minify = function( self,Input )
   return strlower( Input:gsub( '%W', '' ) );
 end
 
-Addon.Dump = function( self,Input )
-  DevTools_Dump( Input );
+Addon.Dump = function( self,Input,StartKey )
+  local SizeOf = tonumber( #Input ) or 0;
+  if( DEVTOOLS_MAX_ENTRY_CUTOFF and SizeOf <= tonumber( DEVTOOLS_MAX_ENTRY_CUTOFF ) ) then
+    DEVTOOLS_MAX_ENTRY_CUTOFF = SizeOf;
+  end
+  DevTools_Dump( Input,StartKey );
 end
 
 Addon.Explode = function( self,Input,Delimiter )
@@ -20,6 +20,10 @@ Addon.Explode = function( self,Input,Delimiter )
   return Result;
 end
 
+Addon.Implode = function( self,Input,Delimiter )
+  return table.concat( Input,Delimiter );
+end
+
 Addon.InArray = function( self,Needle,Haystack )
   for index, _ in pairs( Haystack ) do
     if index == Needle then
@@ -27,6 +31,14 @@ Addon.InArray = function( self,Needle,Haystack )
     end
   end
   return false;
+end
+
+Addon.ArrayReverse = function( self,Input )
+  local Reversed = {};
+  for Key,Value in pairs( Input ) do
+    Reversed[ Value ] = Key;
+  end
+  return Reversed;
 end
 
 Addon.Sort = function( self,Input )
@@ -74,12 +86,4 @@ Addon.Hex2RGB = function( self,Hex )
   return tonumber( '0x' .. Hex:sub( 1,2 ) ) / 255, 
     tonumber( '0x' .. Hex:sub( 3,4 ) ) / 255, 
     tonumber( '0x' .. Hex:sub( 5,6 ) ) / 255
-end
-
-Addon.ArrayReverse = function( self,Input )
-  local Reversed = {};
-  for Key,Value in pairs( Input ) do
-    Reversed[ Value ] = Key;
-  end
-  return Reversed;
 end

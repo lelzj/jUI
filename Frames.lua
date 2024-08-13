@@ -370,6 +370,28 @@ Addon.FRAMES.AddSelect = function( self,VarData,Parent,Handler )
     return Frame;
 end
 
+Addon.FRAMES.PopUpMessage = function( self,VarData,Parent,Handler )
+    local Key = string.lower( VarData.Name );
+    local Frame = CreateFrame( 'Frame',Key..'PopUp',Parent );
+    Frame:SetFrameStrata( 'DIALOG' );
+    Frame:SetToplevel( true );
+    Frame:SetSize( 400,150 );
+    Frame:SetPoint( 'CENTER' );
+    local Text = Frame:CreateFontString( nil,'ARTWORK','GameFontRedLarge' );
+    Text:SetTextColor( VarData.r,VarData.g,VarData.b,VarData.a );
+    Text:SetSize( 380,0 );
+    Text:SetJustifyH( 'CENTER' );
+    Text:SetJustifyV( 'TOP' );
+    Text:SetNonSpaceWrap( true );
+    Text:SetPoint( 'TOP',0,-16 );
+    Text:SetText( VarData.Value );
+    Frame:Show();
+    C_Timer.After( 30,function()
+        Frame:Hide();
+    end );
+    return Frame;
+end
+
 --[[
 Example of all types of widget settings:
 Range       - Creates slider
