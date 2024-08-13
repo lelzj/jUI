@@ -386,7 +386,7 @@ Addon.FRAMES.PopUpMessage = function( self,VarData,Parent,Handler )
     Text:SetPoint( 'TOP',0,-16 );
     Text:SetText( VarData.Value );
     Frame:Show();
-    C_Timer.After( 30,function()
+    C_Timer.After( Handler.MentionTime or 10,function()
         Frame:Hide();
     end );
     return Frame;
