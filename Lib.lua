@@ -88,7 +88,7 @@ Addon.Hex2RGB = function( self,Hex )
     tonumber( '0x' .. Hex:sub( 5,6 ) ) / 255
 end
 
-Addon.GiSub = function( s,pat,repl,n )
+Addon.GiSub = function( self,s,pat,repl,n )
     pat = gsub( pat, '(%a)',
     function ( v ) return '['..strupper( v )..strlower( v )..']' end )
     if n then
