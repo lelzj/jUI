@@ -4,12 +4,8 @@ Addon.Minify = function( self,Input )
   return strlower( Input:gsub( '%W', '' ) );
 end
 
-Addon.Dump = function( self,Input,StartKey )
-  local SizeOf = tonumber( #Input ) or 0;
-  if( DEVTOOLS_MAX_ENTRY_CUTOFF and SizeOf <= tonumber( DEVTOOLS_MAX_ENTRY_CUTOFF ) ) then
-    DEVTOOLS_MAX_ENTRY_CUTOFF = SizeOf;
-  end
-  DevTools_Dump( Input,StartKey );
+Addon.Dump = function( self,Input )
+  DevTools_Dump( Input );
 end
 
 Addon.Explode = function( self,Input,Delimiter )
