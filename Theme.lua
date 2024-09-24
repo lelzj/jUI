@@ -16,6 +16,9 @@ Addon.Theme = {
     Disabled = {
         Hex = '999999',
     },
+    Background = {
+        Hex = '000000',
+    },
     Font = {
         Family = 'Fonts\\FRIZQT__.TTF',
         Flags = 'OUTLINE, MONOCHROME',

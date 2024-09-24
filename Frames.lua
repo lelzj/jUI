@@ -396,6 +396,47 @@ Addon.FRAMES.PopUpMessage = function( self,VarData,Parent,Handler )
     return Frame;
 end
 
+Addon.FRAMES.AddMoveResizable = function( self,VarData,Parent,Handler )
+    local Key = string.lower( VarData.Name );
+    local Frame = CreateFrame( 'Frame',Key..'MovingResizing',Parent );
+    Frame:SetFrameStrata( 'DIALOG' );
+    Frame:SetToplevel( true );
+    Frame:SetSize( 300,150 );
+    Frame:SetPoint( 'CENTER' );
+    Frame:EnableMouse( true );
+    Frame:SetMovable( true );
+    Frame:SetResizable( true );
+    Frame:RegisterForDrag( 'LeftButton' );
+    Frame:SetScript( 'OnDragStart',function( self )
+        self:StartMoving();
+    end );
+
+    local BGTheme = Addon.Theme.Background;
+    local r,g,b,a = BGTheme.r,BGTheme.g,BGTheme.b,0.5;
+
+    Frame.Texture = Frame:CreateTexture();
+    Frame.Texture:SetAllPoints( Frame );
+    Frame.Texture:SetColorTexture( r,g,b,a );
+
+    local TextTheme = Addon.Theme.Warn;
+    local r,g,b,a = TextTheme.r,TextTheme.g,TextTheme.b,1;
+
+    local y = ( Frame:GetHeight()/2 )-20 ;
+
+    local Text = Frame:CreateFontString( nil,'ARTWORK','GameFontRedLarge' );
+    Text:SetTextColor( r,g,b,a );
+    Text:SetSize( 380,0 );
+    Text:SetJustifyH( 'CENTER' );
+    Text:SetJustifyV( 'TOP' );
+    Text:SetNonSpaceWrap( true );
+    Text:SetPoint( 'TOP',0,-( y ) );
+    Text:SetText( VarData.Value );
+
+    Frame:Show();
+
+    return Frame;
+end
+
 --[[
 Example of all types of widget settings:
 Range       - Creates slider
