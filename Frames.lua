@@ -376,29 +376,49 @@ end
 
 Addon.FRAMES.PopUpMessage = function( self,VarData,Parent,Handler )
     local Key = string.lower( VarData.Name );
-    local Frame = CreateFrame( 'Frame',Key..'PopUp',Parent );
+    local Frame = CreateFrame( 'Frame',Key..'PopUp',Parent or UIParent );
     Frame:SetFrameStrata( 'DIALOG' );
     Frame:SetToplevel( true );
-    Frame:SetSize( 400,150 );
+    Frame:SetSize( 300,150 );
     Frame:SetPoint( 'CENTER' );
+
+    Frame.Butt = CreateFrame( 'Button',nil,Frame,'UIPanelButtonTemplate' );
+    Frame.Butt:SetSize( 32,32 );
+    Frame.Butt:SetText( 'OK' );
+    Frame.Butt:SetScript( 'OnClick',function( self )
+        self:GetParent():Hide();
+    end );
+    Frame.Butt:SetPoint( 'topright',Frame,'topright',-10,-10 );
+    Frame.Butt:RegisterForClicks( 'AnyDown','AnyUp' );
+
+    local BGTheme = Addon.Theme.Background;
+    local r,g,b,a = BGTheme.r,BGTheme.g,BGTheme.b,0.5;
+
+    Frame.Texture = Frame:CreateTexture();
+    Frame.Texture:SetAllPoints( Frame );
+    Frame.Texture:SetColorTexture( r,g,b,a );
+
+    local y = ( Frame:GetHeight()/2 )-20 ;
     local Text = Frame:CreateFontString( nil,'ARTWORK','GameFontRedLarge' );
-    Text:SetTextColor( VarData.r,VarData.g,VarData.b,VarData.a );
+
+    local TextTheme = Addon.Theme.Warn;
+    local r,g,b,a = TextTheme.r,TextTheme.g,TextTheme.b,1;
+
+    Text:SetTextColor( r,g,b,a );
     Text:SetSize( 380,0 );
     Text:SetJustifyH( 'CENTER' );
     Text:SetJustifyV( 'TOP' );
     Text:SetNonSpaceWrap( true );
-    Text:SetPoint( 'TOP',0,-16 );
+    Text:SetPoint( 'CENTER' );
     Text:SetText( VarData.Value );
     Frame:Show();
-    C_Timer.After( Handler.MentionTime or 10,function()
-        Frame:Hide();
-    end );
+    
     return Frame;
 end
 
-Addon.FRAMES.AddMoveResizable = function( self,VarData,Parent,Handler )
+Addon.FRAMES.AddMovable = function( self,VarData,Parent,Handler )
     local Key = string.lower( VarData.Name );
-    local Frame = CreateFrame( 'Frame',Key..'MovingResizing',Parent );
+    local Frame = CreateFrame( 'Frame',Key..'MovingResizing',Parent or UIParent );
     Frame:SetFrameStrata( 'DIALOG' );
     Frame:SetToplevel( true );
     Frame:SetSize( 300,150 );
@@ -427,11 +447,10 @@ Addon.FRAMES.AddMoveResizable = function( self,VarData,Parent,Handler )
     Text:SetTextColor( r,g,b,a );
     Text:SetSize( 380,0 );
     Text:SetJustifyH( 'CENTER' );
-    Text:SetJustifyV( 'TOP' );
+    Text:SetJustifyV( 'MIDDLE' );
     Text:SetNonSpaceWrap( true );
-    Text:SetPoint( 'TOP',0,-( y ) );
+    Text:SetPoint( 'CENTER' );
     Text:SetText( VarData.Value );
-
     Frame:Show();
 
     return Frame;
