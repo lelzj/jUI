@@ -362,10 +362,8 @@ Addon.FRAMES.AddSelect = function( self,VarData,Parent,Handler )
             else
                 Info.checked = false;
             end
-            if( Addon:IsRetail() ) then
-                _G[ 'DropDownList1' ].numButtons = _G[ 'DropDownList1' ].numButtons or 0;
-                _G[ 'DropDownList1' ].maxWidth = _G[ 'DropDownList1' ].maxWidth or 0;
-            end
+            _G[ 'DropDownList1' ].numButtons = _G[ 'DropDownList1' ].numButtons or 0;
+            _G[ 'DropDownList1' ].maxWidth = _G[ 'DropDownList1' ].maxWidth or 0;
             UIDropDownMenu_AddButton( Info );
         end
     end
