@@ -19,6 +19,9 @@ Addon.Theme = {
     Background = {
         Hex = '000000',
     },
+    Sex = {
+        Hex = 'c20835',
+    },
     Font = {
         Family = 'Fonts\\FRIZQT__.TTF',
         Flags = 'OUTLINE, MONOCHROME',
