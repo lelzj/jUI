@@ -200,7 +200,17 @@ Addon.FRAMES.AddRange = function( self,VarData,Parent,Handler )
     local Point,RelativeFrame,RelativePoint,X,Y = Frame.High:GetPoint();
     Frame.High:SetPoint( Point,RelativeFrame,RelativePoint,X-5,Y-5 );
 
-    Frame:SetValue( Handler:GetVarValue( Key ) );
+    local TreatAsMouseEvent = true;
+    local Value = Handler:GetVarValue( Key );
+
+    --[[
+    local Working,Error = pcall( Frame.SetValue,Value,TreatAsMouseEvent );
+    if( not Working ) then
+        print( 'FAILED!','Frame:SetValue',Key,Value,Error );
+    end
+    ]]
+    
+    Frame:SetValue( Handler:GetVarValue( Key ),TreatAsMouseEvent );
     Frame.keyValue = Key;
     if( VarData.Flagged ) then
         Frame:Disable();
@@ -219,7 +229,7 @@ Addon.FRAMES.AddRange = function( self,VarData,Parent,Handler )
     Frame.EditBox:SetPoint( 'top',Frame,'bottom',0,2 );
     Frame.EditBox:SetText( Handler:GetVarValue( Key ) );
     --Frame.EditBox:SetBackdrop( ManualBackdrop );
-    --[[
+    --[[    
     Frame.EditBox:HookScript( 'OnTextChanged',function( self )
         local Value = self:GetText();
         if( tonumber( Value ) ) then
@@ -311,6 +321,17 @@ Addon.FRAMES.AddEdit = function( self,VarData,Parent,Handler )
             Handler:SetVarValue( self.keyValue,Value );
         end
     end );
+    Frame:SetScript( 'OnEditFocusGained',function( self )
+        self:HighlightText( 0 );
+    end );
+
+    local BGTheme = Addon.Theme.Background;
+    local r,g,b,a = BGTheme.r,BGTheme.g,BGTheme.b,0.5;
+
+    Frame.Texture = Frame:CreateTexture();
+    Frame.Texture:SetAllPoints( Frame );
+    Frame.Texture:SetColorTexture( r,g,b,a );
+
     return Frame;
 end
 
@@ -320,7 +341,7 @@ Addon.FRAMES.AddMultiEdit = function( self,VarData,Parent,Handler )
     Frame:SetPoint( 'topleft',Parent,'topleft',0,0 );
 
     Frame.Input = CreateFrame( 'EditBox',Key..'Edit',Parent,'InputBoxTemplate' );
-    --Frame.Input:DisableDrawLayer( 'BACKGROUND' );
+    Frame.Input:DisableDrawLayer( 'BACKGROUND' );
     Frame.Input:SetPoint( 'topleft',Frame,'topleft',10,-10 );
     Frame.Input:SetAutoFocus( false );
     Frame.Input:SetMultiLine( true );
@@ -328,7 +349,6 @@ Addon.FRAMES.AddMultiEdit = function( self,VarData,Parent,Handler )
     if( VarData.Flagged ) then
         Frame.Input:Disable();
     end
-    Frame.Input:SetSize( 20,20 );
     Frame.Input:ClearFocus();
     Frame.Input:SetFont( Addon.Theme.Font.Family, Addon.Theme.Font.Normal, Addon.Theme.Font.Flags );
     Frame.Input:SetText( VarData.Value );
@@ -339,8 +359,19 @@ Addon.FRAMES.AddMultiEdit = function( self,VarData,Parent,Handler )
 
         end
     end );
+    Frame.Input:SetScript( 'OnEditFocusGained',function( self )
+        self:HighlightText( 0 );
+    end );
+
+    local BGTheme = Addon.Theme.Background;
+    local r,g,b,a = BGTheme.r,BGTheme.g,BGTheme.b,0.5;
+
+    Frame.Texture = Frame:CreateTexture();
+    Frame.Texture:SetAllPoints( Frame );
+    Frame.Texture:SetColorTexture( r,g,b,a );
     Frame:SetScrollChild( Frame.Input );
-    return Frame.Input;
+
+    return Frame;
 end
 
 Addon.FRAMES.AddSelect = function( self,VarData,Parent,Handler )
@@ -436,7 +467,7 @@ Addon.FRAMES.AddMovable = function( self,VarData,Parent,Handler )
     Frame.Texture:SetAllPoints( Frame );
     Frame.Texture:SetColorTexture( r,g,b,a );
 
-    local TextTheme = Addon.Theme.Warn;
+    local TextTheme = Addon.Theme.Text;
     local r,g,b,a = TextTheme.r,TextTheme.g,TextTheme.b,1;
 
     local y = ( Frame:GetHeight()/2 )-20 ;
