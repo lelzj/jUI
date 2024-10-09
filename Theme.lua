@@ -19,8 +19,11 @@ Addon.Theme = {
     Background = {
         Hex = '000000',
     },
-    Sex = {
-        Hex = 'c20835',
+    Blue = {
+        Hex = '009bff',
+    },
+    Gold = {
+        Hex = 'c38b48',
     },
     Font = {
         Family = 'Fonts\\FRIZQT__.TTF',

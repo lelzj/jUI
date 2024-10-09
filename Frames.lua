@@ -294,12 +294,27 @@ end
 
 Addon.FRAMES.AddButton = function( self,VarData,Parent )
     local Key = string.lower( VarData.Name );
-    local Frame = CreateFrame( 'Button',Key..'Toggle',Parent,'UIPanelButtonNoTooltipTemplate' );
+    local Frame = CreateFrame( 'Button',Key..'Butt',Parent,'UIPanelButtonTemplate' );
     if( VarData.Flagged ) then
         Frame:Disable();
     end
-    Frame:SetText( VarData.DisplayText );
-    Frame:SetSize( 25,25 );
+
+    local TextTheme = Addon.Theme.Text;
+    local r,g,b,a = TextTheme.r,TextTheme.g,TextTheme.b,1;
+    local Font = Addon.Theme.Font;
+    Frame.Text = Frame:CreateFontString( nil,'ARTWORK','GameFontHighlightSmall' )
+    Frame.Text:SetFont( Font.Family,Font.Normal,Font.Flags );
+    Frame.Text:SetTextColor( r,g,b,a );
+    Frame.Text:SetPoint( 'center' );
+    Frame.Text:SetText( VarData.DisplayText );
+
+    local ButtTheme = Addon.Theme.Blue;
+    local r,g,b,a = ButtTheme.r,ButtTheme.g,ButtTheme.b,.6;
+    Frame.Texture = Frame:CreateTexture();
+    Frame.Texture:SetAllPoints( Frame );
+    Frame.Texture:SetColorTexture( r,g,b,a );
+    Frame:DisableDrawLayer( 'BACKGROUND' );
+
     return Frame;
 end
 
@@ -411,14 +426,24 @@ Addon.FRAMES.PopUpMessage = function( self,VarData,Parent,Handler )
     Frame:SetSize( 300,150 );
     Frame:SetPoint( 'CENTER' );
 
-    Frame.Butt = CreateFrame( 'Button',nil,Frame,'UIPanelButtonTemplate' );
+    local ButtData = {
+        Name = Key,
+        DisplayText = 'OK',
+    };
+    Frame.Butt = self:AddButton( ButtData,Frame );
     Frame.Butt:SetSize( 32,32 );
-    Frame.Butt:SetText( 'OK' );
     Frame.Butt:SetScript( 'OnClick',function( self )
         self:GetParent():Hide();
     end );
     Frame.Butt:SetPoint( 'topright',Frame,'topright',-10,-10 );
     Frame.Butt:RegisterForClicks( 'AnyDown','AnyUp' );
+
+    local ButtTheme = Addon.Theme.Blue;
+    local r,g,b,a = ButtTheme.r,ButtTheme.g,ButtTheme.b,1;
+
+    Frame.Butt.Texture = Frame:CreateTexture();
+    Frame.Butt.Texture:SetAllPoints( Frame.Butt );
+    Frame.Butt.Texture:SetColorTexture( r,g,b,a );
 
     local BGTheme = Addon.Theme.Background;
     local r,g,b,a = BGTheme.r,BGTheme.g,BGTheme.b,0.5;
@@ -430,7 +455,7 @@ Addon.FRAMES.PopUpMessage = function( self,VarData,Parent,Handler )
     local y = ( Frame:GetHeight()/2 )-20 ;
     local Text = Frame:CreateFontString( nil,'ARTWORK','GameFontRedLarge' );
 
-    local TextTheme = Addon.Theme.Warn;
+    local TextTheme = Addon.Theme.Text;
     local r,g,b,a = TextTheme.r,TextTheme.g,TextTheme.b,1;
 
     Text:SetTextColor( r,g,b,a );
