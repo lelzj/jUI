@@ -356,10 +356,12 @@ Addon.FRAMES.AddMultiEdit = function( self,VarData,Parent,Handler )
     Frame:SetPoint( 'topleft',Parent,'topleft',0,0 );
 
     Frame.Input = CreateFrame( 'EditBox',Key..'Edit',Parent,'InputBoxTemplate' );
+    Frame.Input:SetTextInsets( 10,10,10,10 );
     Frame.Input:DisableDrawLayer( 'BACKGROUND' );
     Frame.Input:SetPoint( 'topleft',Frame,'topleft',10,-10 );
     Frame.Input:SetAutoFocus( false );
     Frame.Input:SetMultiLine( true );
+    Frame.Input:SetCursorPosition( 0 );
     Frame.Input:SetTextInsets( 0,0,3,3 );
     if( VarData.Flagged ) then
         Frame.Input:Disable();
@@ -367,6 +369,7 @@ Addon.FRAMES.AddMultiEdit = function( self,VarData,Parent,Handler )
     Frame.Input:ClearFocus();
     Frame.Input:SetFont( Addon.Theme.Font.Family, Addon.Theme.Font.Normal, Addon.Theme.Font.Flags );
     Frame.Input:SetText( VarData.Value );
+    Frame.Input:SetCursorPosition( 0 );
     Frame.Input.keyValue = Key;
     Frame.Input:HookScript( 'OnTextChanged',function( self )
         local Value = self:GetText();
@@ -472,7 +475,7 @@ end
 
 Addon.FRAMES.AddMovable = function( self,VarData,Parent,Handler )
     local Key = string.lower( VarData.Name );
-    local Frame = CreateFrame( 'Frame',Key..'MovingResizing',Parent or UIParent );
+    local Frame = CreateFrame( 'Frame',Key..'Moving',Parent or UIParent );
     Frame:SetFrameStrata( 'DIALOG' );
     Frame:SetToplevel( true );
     Frame:SetSize( 300,150 );
@@ -484,6 +487,10 @@ Addon.FRAMES.AddMovable = function( self,VarData,Parent,Handler )
     Frame:SetScript( 'OnDragStart',function( self )
         self:StartMoving();
     end );
+    Frame:SetScript( 'OnDragStop',function( self )
+        self:StopMovingOrSizing();
+        self:SetUserPlaced( true );
+    end );
 
     local BGTheme = Addon.Theme.Background;
     local r,g,b,a = BGTheme.r,BGTheme.g,BGTheme.b,0.5;
@@ -491,20 +498,6 @@ Addon.FRAMES.AddMovable = function( self,VarData,Parent,Handler )
     Frame.Texture = Frame:CreateTexture();
     Frame.Texture:SetAllPoints( Frame );
     Frame.Texture:SetColorTexture( r,g,b,a );
-
-    local TextTheme = Addon.Theme.Text;
-    local r,g,b,a = TextTheme.r,TextTheme.g,TextTheme.b,1;
-
-    local y = ( Frame:GetHeight()/2 )-20 ;
-
-    local Text = Frame:CreateFontString( nil,'ARTWORK','GameFontRedLarge' );
-    Text:SetTextColor( r,g,b,a );
-    Text:SetSize( 380,0 );
-    Text:SetJustifyH( 'CENTER' );
-    Text:SetJustifyV( 'MIDDLE' );
-    Text:SetNonSpaceWrap( true );
-    Text:SetPoint( 'CENTER' );
-    Text:SetText( VarData.Value );
     Frame:Show();
 
     return Frame;
