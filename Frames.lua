@@ -455,7 +455,6 @@ Addon.FRAMES.PopUpMessage = function( self,VarData,Parent,Handler )
     Frame.Texture:SetAllPoints( Frame );
     Frame.Texture:SetColorTexture( r,g,b,a );
 
-    local y = ( Frame:GetHeight()/2 )-20 ;
     local Text = Frame:CreateFontString( nil,'ARTWORK','GameFontRedLarge' );
 
     local TextTheme = Addon.Theme.Text;
@@ -498,6 +497,20 @@ Addon.FRAMES.AddMovable = function( self,VarData,Parent,Handler )
     Frame.Texture = Frame:CreateTexture();
     Frame.Texture:SetAllPoints( Frame );
     Frame.Texture:SetColorTexture( r,g,b,a );
+
+    local Text = Frame:CreateFontString( nil,'ARTWORK','GameFontRedLarge' );
+
+    local TextTheme = Addon.Theme.Text;
+    local r,g,b,a = TextTheme.r,TextTheme.g,TextTheme.b,1;
+
+    Text:SetTextColor( r,g,b,a );
+    Text:SetSize( 380,0 );
+    Text:SetJustifyH( 'CENTER' );
+    Text:SetJustifyV( 'MIDDLE' );
+    Text:SetNonSpaceWrap( true );
+    Text:SetPoint( 'CENTER' );
+    Text:SetText( VarData.Value );
+
     Frame:Show();
 
     return Frame;
