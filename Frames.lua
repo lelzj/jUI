@@ -2,6 +2,16 @@ local AddonName,Addon = ...;
 
 Addon.FRAMES = CreateFrame( 'Frame' );
 
+Addon.FRAMES.Debug = function( self,... )
+    local Prefix = CreateColor(
+        Addon.Theme.Debug.r,
+        Addon.Theme.Debug.g,
+        Addon.Theme.Debug.b
+    ):WrapTextInColorCode( AddonName..' Debug' );
+
+    _G[ 'DEFAULT_CHAT_FRAME' ]:AddMessage( string.join( ' ', Prefix, ... ) );
+end
+
 Addon.FRAMES.Notify = function( self,... )
     local Prefix = CreateColor(
         Addon.Theme.Notify.r,

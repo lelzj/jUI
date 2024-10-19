@@ -4,6 +4,9 @@ Addon.Theme = {
     Text = {
         Hex = 'ffffff',
     },
+    Debug = {
+        Hex = 'cccccc',
+    },
     Notify = {
         Hex = '009bff',
     },
