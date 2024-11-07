@@ -5,7 +5,19 @@ Addon.Minify = function( self,Input )
 end
 
 Addon.Dump = function( self,Input )
+  local PREV_DEVTOOLS_MAX_ENTRY_CUTOFF = DEVTOOLS_MAX_ENTRY_CUTOFF;
+  local PREV_DEVTOOLS_LONG_STRING_CUTOFF = DEVTOOLS_LONG_STRING_CUTOFF;
+  local PREV_DEVTOOLS_DEPTH_CUTOFF = DEVTOOLS_DEPTH_CUTOFF;
+
+  DEVTOOLS_MAX_ENTRY_CUTOFF = 999;    -- Maximum table entries shown
+  DEVTOOLS_LONG_STRING_CUTOFF = 999; -- Maximum string size shown
+  DEVTOOLS_DEPTH_CUTOFF = 10;        -- Maximum table depth
+
   DevTools_Dump( Input );
+
+  DEVTOOLS_MAX_ENTRY_CUTOFF = PREV_DEVTOOLS_MAX_ENTRY_CUTOFF;
+  DEVTOOLS_LONG_STRING_CUTOFF = PREV_DEVTOOLS_LONG_STRING_CUTOFF;
+  DEVTOOLS_DEPTH_CUTOFF = PREV_DEVTOOLS_DEPTH_CUTOFF;
 end
 
 Addon.Explode = function( self,Input,Delimiter )
