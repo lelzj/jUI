@@ -56,21 +56,7 @@ Addon.FRAMES.AddLocked = function( self,VarData,Parent )
     return FontString;
 end
 
-Addon.FRAMES.AddModified = function( self,VarData,Parent )
-    local FontString = Parent:CreateFontString( nil,'ARTWORK','GameFontHighlightSmall' );
-    FontString:SetFont( Addon.Theme.Font.Family, Addon.Theme.Font.Normal, Addon.Theme.Font.Flags );
-    FontString:SetText( VarData.DisplayText );
-    FontString:SetTextColor( 
-        Addon.Theme.Notify.r,
-        Addon.Theme.Notify.g,
-        Addon.Theme.Notify.b
-    );
-    FontString:SetJustifyH( 'left' );
-    FontString:SetJustifyV( 'top' );
-    return FontString;
-end
-
-Addon.FRAMES.AddLabel = function( self,VarData,Parent )
+Addon.FRAMES.AddLabel = function( self,VarData,Parent,Theme )
     local FontString = Parent:CreateFontString( nil,'ARTWORK','GameFontHighlightSmall' );
     FontString:SetFont( Addon.Theme.Font.Family, Addon.Theme.Font.Normal, Addon.Theme.Font.Flags );
     FontString:SetText( VarData.DisplayText );
@@ -82,9 +68,9 @@ Addon.FRAMES.AddLabel = function( self,VarData,Parent )
         );
     else
         FontString:SetTextColor( 
-            Addon.Theme.Text.r,
-            Addon.Theme.Text.g,
-            Addon.Theme.Text.b
+            Theme.r,
+            Theme.g,
+            Theme.b
         );
     end
     FontString:SetJustifyH( 'left' );
@@ -92,7 +78,7 @@ Addon.FRAMES.AddLabel = function( self,VarData,Parent )
     return FontString;
 end
 
-Addon.FRAMES.AddModifiedTip = function( self,VarData,Parent )
+Addon.FRAMES.AddTip = function( self,VarData,Parent,Theme )
     local FontString = Parent:CreateFontString( nil,'ARTWORK','GameFontHighlightSmall' );
     FontString:SetFont( Addon.Theme.Font.Family, Addon.Theme.Font.Normal, Addon.Theme.Font.Flags );
     FontString:SetText( VarData.DisplayText );
@@ -104,48 +90,9 @@ Addon.FRAMES.AddModifiedTip = function( self,VarData,Parent )
         );
     else
         FontString:SetTextColor( 
-            Addon.Theme.Notify.r,
-            Addon.Theme.Notify.g,
-            Addon.Theme.Notify.b
-        );
-    end
-    FontString:SetJustifyH( 'left' );
-    FontString:SetJustifyV( 'top' );
-    Parent.DataKeys = {
-        Name = VarData.Name,
-        DisplayText = VarData.DisplayText,
-        Description = VarData.Description,
-        Parent = FontString
-    };
-    Parent:SetScript( 'OnEnter',function( self )
-        self.Label.Tip = CreateFrame( 'GameTooltip',self.DataKeys.Name..'ToolTip',UIParent,'GameTooltipTemplate' );
-        GameTooltip:SetOwner( self.DataKeys.Parent,'ANCHOR_NONE',0,0 );
-        GameTooltip:AddLine( self.DataKeys.DisplayText,nil,nil,nil,false );
-        GameTooltip:AddLine( self.DataKeys.Description,1,1,1,true );
-        GameTooltip:SetPoint( 'topright',self.DataKeys.Parent,'bottomright',0,0 );
-        GameTooltip:Show();
-    end );
-    Parent:SetScript( 'OnLeave',function( self )
-        GameTooltip:Hide();
-    end );
-    return FontString;
-end
-
-Addon.FRAMES.AddTip = function( self,VarData,Parent )
-    local FontString = Parent:CreateFontString( nil,'ARTWORK','GameFontHighlightSmall' );
-    FontString:SetFont( Addon.Theme.Font.Family, Addon.Theme.Font.Normal, Addon.Theme.Font.Flags );
-    FontString:SetText( VarData.DisplayText );
-    if( VarData.Flagged ) then
-        FontString:SetTextColor( 
-            Addon.Theme.Disabled.r,
-            Addon.Theme.Disabled.g,
-            Addon.Theme.Disabled.b
-        );
-    else
-        FontString:SetTextColor( 
-            Addon.Theme.Text.r,
-            Addon.Theme.Text.g,
-            Addon.Theme.Text.b
+            Theme.r,
+            Theme.g,
+            Theme.b
         );
     end
     FontString:SetJustifyH( 'left' );
@@ -160,7 +107,7 @@ Addon.FRAMES.AddTip = function( self,VarData,Parent )
         GameTooltip:SetOwner( self.DataKeys.Parent,'ANCHOR_NONE',0,0 );
         GameTooltip:AddLine( self.DataKeys.DisplayText,nil,nil,nil,false );
         GameTooltip:AddLine( self.DataKeys.Description,1,1,1,true );
-        GameTooltip:SetPoint( 'topright',self.DataKeys.Parent,'bottomright',0,0 );
+        GameTooltip:SetPoint( 'topright',self.DataKeys.Parent,'bottomleft',0,0 );
         GameTooltip:Show();
     end );
     Parent:SetScript( 'OnLeave',function( self )
@@ -281,6 +228,10 @@ Addon.FRAMES.AddVarToggle = function( self,VarData,Parent,Handler )
     return Frame;
 end
 
+Addon.FRAMES.AddRadio = function( self,VarData,Parent,Handler )
+-- @todo: not implemented yet
+end
+
 Addon.FRAMES.AddCheckBox = function( self,VarData,Parent,Handler )
     local Key = string.lower( VarData.Name );
     local Frame = CreateFrame( 'CheckButton',Key..'Toggle',Parent,'ChatConfigCheckButtonTemplate' );
@@ -302,7 +253,7 @@ Addon.FRAMES.AddCheckBox = function( self,VarData,Parent,Handler )
     return Frame;
 end
 
-Addon.FRAMES.AddButton = function( self,VarData,Parent )
+Addon.FRAMES.AddButton = function( self,VarData,Parent,Theme )
     local Key = string.lower( VarData.Name );
     local Frame = CreateFrame( 'Button',Key..'Butt',Parent,'UIPanelButtonTemplate' );
     if( VarData.Flagged ) then
@@ -318,8 +269,7 @@ Addon.FRAMES.AddButton = function( self,VarData,Parent )
     Frame.Text:SetPoint( 'center' );
     Frame.Text:SetText( VarData.DisplayText );
 
-    local ButtTheme = Addon.Theme.Blue;
-    local r,g,b,a = ButtTheme.r,ButtTheme.g,ButtTheme.b,.6;
+    local r,g,b,a = Theme.r,Theme.g,Theme.b,.6;
     Frame.Texture = Frame:CreateTexture();
     Frame.Texture:SetAllPoints( Frame );
     Frame.Texture:SetColorTexture( r,g,b,a );
@@ -403,6 +353,9 @@ Addon.FRAMES.AddMultiEdit = function( self,VarData,Parent,Handler )
 end
 
 Addon.FRAMES.AddSelect = function( self,VarData,Parent,Handler )
+    local TrimString = function( String,Length )
+        return String:sub( 1,Length );
+    end
     local Key = string.lower( VarData.Name );
     local Frame = CreateFrame( 'Frame',Key..'Select',Parent,'UIDropDownMenuTemplate' );
     Frame.initialize = function()
@@ -417,7 +370,16 @@ Addon.FRAMES.AddSelect = function( self,VarData,Parent,Handler )
             end
             if ( tostring( Handler:GetVarValue( Key ) ) == tostring( Data.Value ) ) then
                 Info.checked = true;
-                Frame.Text:SetText( Info.text );
+                local Text = Info.text;
+                local Length = 12;
+                if( string.len( Text ) >= Length ) then
+                    Text = TrimString( Text,Length );
+                end
+                local DataVal = '... ['..tostring( Handler:GetVarValue( Key ) )..']';
+                if( not( string.len( DataVal ) > 10 ) ) then
+                    Text = Text..DataVal;
+                end
+                Frame.Text:SetText( Text );
             else
                 Info.checked = false;
             end

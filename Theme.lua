@@ -28,6 +28,9 @@ Addon.Theme = {
     Gold = {
         Hex = 'c38b48',
     },
+    Sex = {
+        Hex = 'c20835',
+    },
     Font = {
         Family = 'Fonts\\FRIZQT__.TTF',
         Flags = 'OUTLINE, MONOCHROME',
