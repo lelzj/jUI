@@ -1,3 +1,5 @@
+-- https://warcraft.wiki.gg/wiki/Patch_11.0.0/API_changes
+-- @todo
 local AddonName,Addon = ...;
 
 Addon.FRAMES = CreateFrame( 'Frame' );

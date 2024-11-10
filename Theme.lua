@@ -29,7 +29,7 @@ Addon.Theme = {
         Hex = 'c38b48',
     },
     Sex = {
-        Hex = 'c20835',
+        Hex = 'b17a99',
     },
     Font = {
         Family = 'Fonts\\FRIZQT__.TTF',
