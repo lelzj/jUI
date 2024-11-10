@@ -359,39 +359,26 @@ Addon.FRAMES.AddSelect = function( self,VarData,Parent,Handler )
         return String:sub( 1,Length );
     end
     local Key = string.lower( VarData.Name );
-    local Frame = CreateFrame( 'Frame',Key..'Select',Parent,'UIDropDownMenuTemplate' );
-    Frame.initialize = function()
-        local Info = {};
-        for i,Data in pairs( VarData.KeyPairs ) do
-            Info.isNotRadio = true;
-            Info.text = Data.Description;
-            Info.value = Data.Value;
-            Info.func = function( self )
-                Handler:SetVarValue( Key,self.value );
-                Frame:initialize();
+    local Frame = CreateFrame( 'DropdownButton',Key..'Select',Parent,'WowStyle1DropdownTemplate' );
+
+    Frame:SetupMenu(function( DropDown,Interface )
+        for i,v in pairs( VarData.KeyPairs ) do
+
+            if( tostring( v.Value ) == tostring( Handler:GetVarValue( Key ) ) ) then
+                Frame:SetDefaultText( v.Description );
             end
-            if ( tostring( Handler:GetVarValue( Key ) ) == tostring( Data.Value ) ) then
-                Info.checked = true;
-                local Text = Info.text;
-                local Length = 12;
-                if( string.len( Text ) >= Length ) then
-                    Text = TrimString( Text,Length );
-                end
-                local DataVal = '... ['..tostring( Handler:GetVarValue( Key ) )..']';
-                if( not( string.len( DataVal ) > 10 ) ) then
-                    Text = Text..DataVal;
-                end
-                Frame.Text:SetText( Text );
-            else
-                Info.checked = false;
-            end
-            _G[ 'DropDownList1' ].numButtons = _G[ 'DropDownList1' ].numButtons or 0;
-            _G[ 'DropDownList1' ].maxWidth = _G[ 'DropDownList1' ].maxWidth or 0;
-            UIDropDownMenu_AddButton( Info );
+
+            -- OnChange event
+            Interface:CreateButton( v.Description,function()
+                Handler:SetVarValue( Key,v.Value );
+            end );
+
         end
+    end );
+    if( Addon:IsClassic() ) then
+        Frame:SetWidth( 120 );
     end
-    Frame:initialize();
-    Frame:SetHeight( 20 );
+
     return Frame;
 end
 
