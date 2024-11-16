@@ -160,8 +160,8 @@ Addon.FRAMES.AddRange = function( self,VarData,Parent,Handler )
     Frame.High:SetPoint( Point,RelativeFrame,RelativePoint,X-5,Y-5 );
 
     local TreatAsMouseEvent = true;
-    local Value = Handler:GetVarValue( Key );
 
+    local Value = Handler.Get( Key );
     --[[
     local Working,Error = pcall( Frame.SetValue,Value,TreatAsMouseEvent );
     if( not Working ) then
@@ -169,7 +169,7 @@ Addon.FRAMES.AddRange = function( self,VarData,Parent,Handler )
     end
     ]]
     
-    Frame:SetValue( Handler:GetVarValue( Key ),TreatAsMouseEvent );
+    Frame:SetValue( Value,TreatAsMouseEvent );
     Frame.keyValue = Key;
     if( VarData.Flagged ) then
         Frame:Disable();
@@ -186,7 +186,7 @@ Addon.FRAMES.AddRange = function( self,VarData,Parent,Handler )
     --Frame.EditBox:GetFontString():SetJustifyH( 'center' );
     Frame.EditBox:ClearAllPoints();
     Frame.EditBox:SetPoint( 'top',Frame,'bottom',0,2 );
-    Frame.EditBox:SetText( Handler:GetVarValue( Key ) );
+    Frame.EditBox:SetText( Value );
     --Frame.EditBox:SetBackdrop( ManualBackdrop );
     --[[    
     Frame.EditBox:HookScript( 'OnTextChanged',function( self )
@@ -196,10 +196,13 @@ Addon.FRAMES.AddRange = function( self,VarData,Parent,Handler )
         end
     end );
     ]]
+
     Frame:HookScript( 'OnValueChanged',function( self,Value )
+        --print( self.keyValue,Addon:SliderRound( self:GetValue(),VarData.Step ) )
         self.EditBox:SetText( Addon:SliderRound( self:GetValue(),VarData.Step ) );
-        Handler:SetVarValue( self.keyValue,Addon:SliderRound( self:GetValue(),VarData.Step ) );
+        Handler.Set( self.keyValue,Addon:SliderRound( self:GetValue(),VarData.Step ) );
     end );
+
     Frame.EditBox:Disable();
     Frame:SetHeight( 15 );
     return Frame;
