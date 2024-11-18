@@ -197,7 +197,13 @@ Addon.FRAMES.AddRange = function( self,VarData,Parent,Handler )
     end );
     ]]
 
-    Frame:HookScript( 'OnValueChanged',function( self,Value )
+    Frame:HookScript( 'OnValueChanged',function( self,Value,UserInput )
+        if( UserInput ) then
+            -- Manually set by the user dragging slider
+        else
+            -- Set from a script
+        end
+
         --print( self.keyValue,Addon:SliderRound( self:GetValue(),VarData.Step ) )
         self.EditBox:SetText( Addon:SliderRound( self:GetValue(),VarData.Step ) );
         Handler.Set( self.keyValue,Addon:SliderRound( self:GetValue(),VarData.Step ) );
