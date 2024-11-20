@@ -197,7 +197,16 @@ Addon.FRAMES.AddRange = function( self,VarData,Parent,Handler )
     end );
     ]]
 
+    --[[
+    Frame:HookScript( 'OnMouseWheel',function( self,Value )
+        print( 'OnMouseWheel',Value )
+    end );
+
+    Frame:SetObeyStepOnDrag( true );
+    ]]
+
     Frame:HookScript( 'OnValueChanged',function( self,Value,UserInput )
+        --print( 'OnValueChanged',Value,UserInput )
         if( UserInput ) then
             -- Manually set by the user dragging slider
         else
