@@ -133,7 +133,7 @@ end
 
 Addon.FRAMES.AddRange = function( self,VarData,Parent,Handler )
     local Key = string.lower( VarData.Name );
-    local Frame = CreateFrame( 'Slider',Key..'Range',Parent,'OptionsSliderTemplate' );
+    local Frame = CreateFrame( 'Slider',Key..'Range',Parent,'UISliderTemplateWithLabels' );
     --[[
     local SliderBackdrop  = {
         bgFile = "Interface\\Buttons\\UI-SliderBar-Background",
@@ -143,11 +143,10 @@ Addon.FRAMES.AddRange = function( self,VarData,Parent,Handler )
     };
     ]]
     Frame:SetMinMaxValues( VarData.KeyPairs.Low.Value,VarData.KeyPairs.High.Value );
+    Frame:SetObeyStepOnDrag( true );
     Frame:SetValueStep( VarData.Step );
-    Frame:SetHitRectInsets( 0,0,-10,0 );
-    --Frame:SetBackdrop( SliderBackdrop );
-    Frame:SetThumbTexture( "Interface\\Buttons\\UI-SliderBar-Button-Horizontal" );
-    Frame:SetOrientation( 'HORIZONTAL' );
+    Frame:SetOrientation( VarData.Orientation or 'HORIZONTAL' );
+
     Frame.minValue,Frame.maxValue = Frame:GetMinMaxValues();
 
     Frame.Low:SetText( VarData.KeyPairs.Low.Value );
@@ -159,8 +158,6 @@ Addon.FRAMES.AddRange = function( self,VarData,Parent,Handler )
     local Point,RelativeFrame,RelativePoint,X,Y = Frame.High:GetPoint();
     Frame.High:SetPoint( Point,RelativeFrame,RelativePoint,X-5,Y-5 );
 
-    local TreatAsMouseEvent = true;
-
     local Value = Handler.Get( Key );
     --[[
     local Working,Error = pcall( Frame.SetValue,Value,TreatAsMouseEvent );
@@ -169,7 +166,7 @@ Addon.FRAMES.AddRange = function( self,VarData,Parent,Handler )
     end
     ]]
     
-    Frame:SetValue( Value,TreatAsMouseEvent );
+    Frame:SetValue( Value );
     Frame.keyValue = Key;
     if( VarData.Flagged ) then
         Frame:Disable();
@@ -181,12 +178,7 @@ Addon.FRAMES.AddRange = function( self,VarData,Parent,Handler )
         tile = true, edgeSize = 1, tileSize = 5,
     };
     ]]
-    Frame.EditBox = CreateFrame( 'EditBox',Key..'SliderEditBox',Frame,'InputBoxTemplate' --[[and BackdropTemplate]] );
-    Frame.EditBox:SetSize( 40,15 );
-    --Frame.EditBox:GetFontString():SetJustifyH( 'center' );
-    Frame.EditBox:ClearAllPoints();
-    Frame.EditBox:SetPoint( 'top',Frame,'bottom',0,2 );
-    Frame.EditBox:SetText( Value );
+
     --Frame.EditBox:SetBackdrop( ManualBackdrop );
     --[[    
     Frame.EditBox:HookScript( 'OnTextChanged',function( self )
@@ -201,11 +193,18 @@ Addon.FRAMES.AddRange = function( self,VarData,Parent,Handler )
     Frame:HookScript( 'OnMouseWheel',function( self,Value )
         print( 'OnMouseWheel',Value )
     end );
-
-    Frame:SetObeyStepOnDrag( true );
     ]]
 
-    Frame:HookScript( 'OnValueChanged',function( self,Value,UserInput )
+    Frame.EditBox = CreateFrame( 'EditBox',Key..'SliderEditBox',Frame,'InputBoxTemplate' --[[and BackdropTemplate]] );
+    Frame.EditBox:SetSize( 40,15 );
+    --Frame.EditBox:GetFontString():SetJustifyH( 'center' );
+    Frame.EditBox:ClearAllPoints();
+    Frame.EditBox:SetPoint( 'center',Frame,'center',5,-14 );
+    Frame.EditBox:SetText( Value );
+    Frame.EditBox:SetTextInsets(10, 10, 2, 2 );
+    Frame.EditBox:Disable();
+
+    Frame:SetScript( 'OnValueChanged',function( self,Value,UserInput )
         --print( 'OnValueChanged',Value,UserInput )
         if( UserInput ) then
             -- Manually set by the user dragging slider
@@ -218,8 +217,7 @@ Addon.FRAMES.AddRange = function( self,VarData,Parent,Handler )
         Handler.Set( self.keyValue,Addon:SliderRound( self:GetValue(),VarData.Step ) );
     end );
 
-    Frame.EditBox:Disable();
-    Frame:SetHeight( 15 );
+    Frame:SetSize( 144,15 );
     return Frame;
 end
 
