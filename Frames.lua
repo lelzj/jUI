@@ -432,16 +432,17 @@ Addon.FRAMES.PopUpMessage = function( self,VarData,Parent,Handler )
     Frame.Texture:SetAllPoints( Frame );
     Frame.Texture:SetColorTexture( r,g,b,a );
 
-    local Text = Frame:CreateFontString( nil,'ARTWORK','GameFontRedLarge' );
+    local Text = Frame:CreateFontString( nil,'ARTWORK','GameFontNormalSmall' );
 
     local TextTheme = Addon.Theme.Text;
     local r,g,b,a = TextTheme.r,TextTheme.g,TextTheme.b,1;
 
     Text:SetTextColor( r,g,b,a );
-    Text:SetSize( 380,0 );
+    Text:SetSize( Frame:GetWidth()-10,0 );
     Text:SetJustifyH( 'CENTER' );
     Text:SetJustifyV( 'TOP' );
     Text:SetNonSpaceWrap( true );
+    Text:SetWordWrap( true );
     Text:SetPoint( 'CENTER' );
     Text:SetText( VarData.Value );
     Frame:Show();
@@ -475,16 +476,17 @@ Addon.FRAMES.AddMovable = function( self,VarData,Parent,Handler )
     Frame.Texture:SetAllPoints( Frame );
     Frame.Texture:SetColorTexture( r,g,b,a );
 
-    local Text = Frame:CreateFontString( nil,'ARTWORK','GameFontRedLarge' );
+    local Text = Frame:CreateFontString( nil,'ARTWORK','GameFontNormalSmall' );
 
     local TextTheme = Addon.Theme.Text;
     local r,g,b,a = TextTheme.r,TextTheme.g,TextTheme.b,1;
 
     Text:SetTextColor( r,g,b,a );
-    Text:SetSize( 380,0 );
+    Text:SetSize( Frame:GetWidth()-10,0 );
     Text:SetJustifyH( 'CENTER' );
     Text:SetJustifyV( 'MIDDLE' );
     Text:SetNonSpaceWrap( true );
+    Text:SetWordWrap( true );
     Text:SetPoint( 'CENTER' );
     Text:SetText( VarData.Value );
 
